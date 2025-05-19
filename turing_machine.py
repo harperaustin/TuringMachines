@@ -2,6 +2,7 @@ from collections import defaultdict
 
 
 class TuringMachine:
+    # initialize the turing machine
     def __init__(self, input_alphabet : list[str], tape_alphabet : list[str], states : list[str], start_state : str, accept_state : str, reject_state : str, transition_function : dict[tuple[str, str], tuple[str, str, str]]):
         self.input_alphabet = input_alphabet
         self.tape_alphabet = tape_alphabet
@@ -27,6 +28,9 @@ class TuringMachine:
             raise ValueError("Transition function must be a dictionary")
         self.transition_function = transition_function
 
+
+
+    # run the turing machine on an input string
     def run(self, input_string: str):
         tape = defaultdict(lambda: " ")
         for i, symbol in enumerate(input_string):
@@ -43,7 +47,10 @@ class TuringMachine:
             return True
         else:
             return False
+        
 
+
+    # step the turing machine
     def step(self, current_state : str, tape : dict[int, str], head_position : int) -> tuple[str, int]:
         if current_state not in self.states:
             raise ValueError(f"Current state {current_state} is not in the states")
@@ -57,8 +64,8 @@ class TuringMachine:
             raise ValueError(f"New state {new_state} is not in the states")
         if new_symbol not in self.tape_alphabet:
             raise ValueError(f"New symbol {new_symbol} is not in the tape alphabet")
-        if direction not in ['R', 'L']:
-            raise ValueError(f"Invalid direction {direction}. Must be 'R' or 'L'")
+        if direction not in ['R', 'L', 'S']:
+            raise ValueError(f"Invalid direction {direction}. Must be 'L', 'R', or 'S'")
         
         # Write the new symbol to the tape
         tape[head_position] = new_symbol
@@ -68,5 +75,6 @@ class TuringMachine:
             head_position += 1
         elif direction == 'L':
             head_position -= 1
+        # 'S' means stay in place, so no change to head_position
             
         return new_state, head_position
