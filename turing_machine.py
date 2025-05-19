@@ -4,6 +4,7 @@ from collections import defaultdict
 class TuringMachine:
     # initialize the turing machine
     def __init__(self, input_alphabet : list[str], tape_alphabet : list[str], states : list[str], start_state : str, accept_state : str, reject_state : str, transition_function : dict[tuple[str, str], tuple[str, str, str]]):
+        
         self.input_alphabet = input_alphabet
         self.tape_alphabet = tape_alphabet
         # verify that input alphabet is a subset of tape alphabet
@@ -52,13 +53,19 @@ class TuringMachine:
 
     # step the turing machine
     def step(self, current_state : str, tape : dict[int, str], head_position : int) -> tuple[str, int]:
+
+        # verify that current state is in states
         if current_state not in self.states:
             raise ValueError(f"Current state {current_state} is not in the states")
-            
+        
+
+        # verify that current symbol is in tape alphabet
         current_symbol = tape[head_position]
         if (current_state, current_symbol) not in self.transition_function:
             raise ValueError(f"No transition defined for state {current_state} and symbol {current_symbol}")
-            
+        
+
+        # verify that new state is in states, new symbol is in tape alphabet, and direction is in ['R', 'L', 'S']
         new_state, new_symbol, direction = self.transition_function[(current_state, current_symbol)]
         if new_state not in self.states:
             raise ValueError(f"New state {new_state} is not in the states")
