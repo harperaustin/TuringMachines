@@ -3,6 +3,7 @@ from turing_machine import TuringMachine
 
 class TestTuringMachine(unittest.TestCase):
 
+    # TODO: test more.
     def test_scenario_1(self):
         # Create a machine that accepts the language of all strings with an even number of a's
         machine = TuringMachine(
